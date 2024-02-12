@@ -30,5 +30,6 @@ public class OrderHeaderRepositoryTest {
         assertNotNull(fetchedOrder.getId());
         System.out.println(fetchedOrder.getCreatedDate().toLocalDateTime());
         assertNotNull(fetchedOrder.getCreatedDate());
+        assertNotNull(fetchedOrder.getLastModifiedDate());
     }
 }
