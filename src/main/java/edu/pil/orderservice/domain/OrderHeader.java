@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -69,5 +70,12 @@ public class OrderHeader extends BaseEntity{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getCustomer(), getShippingAddress(), getBillToAddress(), getOrderStatus(), getOrderLines());
+    }
+
+    public void addOrderLine(OrderLine orderLine){
+        if (orderLines == null)
+            orderLines = new HashSet<>();
+        orderLines.add(orderLine);
+        orderLine.setOrderHeader(this);
     }
 }
