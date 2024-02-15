@@ -33,4 +33,12 @@ class ProductRepositoryTest {
         assertNotNull(fetchedProduct.getCreatedDate());
         assertNotNull(fetchedProduct.getLastModifiedDate());
     }
+
+    @Test
+    void getCategoryTest() {
+        var product = productRepository.findByDescription("PRODUCT1");
+
+        assertNotNull(product);
+        assertEquals(product.getCategories().size(), 2);
+    }
 }

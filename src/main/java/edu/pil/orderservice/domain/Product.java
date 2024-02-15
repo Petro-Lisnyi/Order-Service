@@ -1,12 +1,11 @@
 package edu.pil.orderservice.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,6 +16,12 @@ public class Product extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
+
+    @ManyToMany
+    @JoinTable(name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
     @Override
     public boolean equals(Object o) {
