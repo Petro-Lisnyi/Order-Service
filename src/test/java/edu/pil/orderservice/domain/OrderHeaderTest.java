@@ -9,9 +9,11 @@ class OrderHeaderTest {
     @Test
     void testEquals() {
         OrderHeader orderHeader1 = new OrderHeader();
-        orderHeader1.setCustomer("First");
+        Customer customer = new Customer();
+        customer.setCustomerName("First");
+        orderHeader1.setCustomer(customer);
         OrderHeader orderHeader2 = new OrderHeader();
-        orderHeader2.setCustomer("First");
+        orderHeader2.setCustomer(customer);
         assert (orderHeader1.equals(orderHeader2));
     }
 
