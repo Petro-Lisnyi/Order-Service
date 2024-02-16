@@ -69,16 +69,15 @@ public class OrderHeaderRepositoryTest {
 
         var orderApproval = new OrderApproval();
         orderApproval.setApprovedBy(customer.getCustomerName());
-        var savedOrderApproval = orderApprovalRepository.save(orderApproval);
+//        var savedOrderApproval = orderApprovalRepository.save(orderApproval);
 
 
-        orderHeader.setCustomer(savedCustomer);
-        orderHeader.setOrderApproval(savedOrderApproval);
-
-        OrderLine orderLine = new OrderLine();
+        var orderLine = new OrderLine();
         orderLine.setQuantityOrdered(4);
         orderLine.setProduct(product);
 
+        orderHeader.setCustomer(savedCustomer);
+        orderHeader.setOrderApproval(orderApproval);
         orderHeader.addOrderLine(orderLine);
         OrderHeader savedOrder = orderHeaderRepository.save(orderHeader);
 
