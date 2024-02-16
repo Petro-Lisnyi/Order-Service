@@ -60,6 +60,9 @@ public class OrderHeader extends BaseEntity{
     @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
     private Set<OrderLine> orderLines;
 
+    @OneToOne
+    private OrderApproval orderApproval;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

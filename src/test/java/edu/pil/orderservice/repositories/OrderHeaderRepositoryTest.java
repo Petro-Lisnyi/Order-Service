@@ -24,6 +24,9 @@ public class OrderHeaderRepositoryTest {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    OrderApprovalRepository orderApprovalRepository;
+
     private Product product;
 
     @BeforeEach
@@ -62,9 +65,15 @@ public class OrderHeaderRepositoryTest {
 
         var customer = new Customer();
         customer.setCustomerName("New Customer");
-
         var savedCustomer = customerRepository.save(customer);
+
+        var orderApproval = new OrderApproval();
+        orderApproval.setApprovedBy(customer.getCustomerName());
+        var savedOrderApproval = orderApprovalRepository.save(orderApproval);
+
+
         orderHeader.setCustomer(savedCustomer);
+        orderHeader.setOrderApproval(savedOrderApproval);
 
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(4);
