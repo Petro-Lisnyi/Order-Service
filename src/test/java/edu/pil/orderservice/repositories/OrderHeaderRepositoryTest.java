@@ -1,6 +1,7 @@
 package edu.pil.orderservice.repositories;
 
 import edu.pil.orderservice.domain.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +86,42 @@ public class OrderHeaderRepositoryTest {
         assertNotNull(savedOrder.getId());
         assertNotNull(savedOrder.getOrderLines());
         assertEquals(savedOrder.getOrderLines().size(), 1);
+    }
+    @Test
+    void testDeleteOrderWithLine() {
+
+        var orderHeader = new OrderHeader();
+
+        var customer = new Customer();
+        customer.setCustomerName("New Customer");
+        var savedCustomer = customerRepository.save(customer);
+
+        var orderApproval = new OrderApproval();
+        orderApproval.setApprovedBy(customer.getCustomerName());
+//        var savedOrderApproval = orderApprovalRepository.save(orderApproval);
+
+
+        var orderLine = new OrderLine();
+        orderLine.setQuantityOrdered(5);
+        orderLine.setProduct(product);
+
+        orderHeader.setCustomer(savedCustomer);
+        orderHeader.setOrderApproval(orderApproval);
+        orderHeader.addOrderLine(orderLine);
+        var savedOrder = orderHeaderRepository.saveAndFlush(orderHeader);
+
+        assertNotNull(savedOrder);
+        assertNotNull(savedOrder.getId());
+        assertNotNull(savedOrder.getOrderLines());
+        assertEquals(savedOrder.getOrderLines().size(), 1);
+
+        orderHeaderRepository.deleteById(savedOrder.getId());
+        orderHeaderRepository.flush();
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            var fetched = orderHeaderRepository.getById(savedOrder.getId());
+            System.out.println(fetched);
+            assertNull(fetched);
+        });
     }
 }
