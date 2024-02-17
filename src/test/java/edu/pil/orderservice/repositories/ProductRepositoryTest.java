@@ -36,7 +36,7 @@ class ProductRepositoryTest {
 
     @Test
     void getCategoryTest() {
-        var product = productRepository.findByDescription("PRODUCT1");
+        var product = productRepository.findByDescription("PRODUCT1").get();
 
         assertNotNull(product);
         assertEquals(product.getCategories().size(), 2);
