@@ -13,10 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("local")
@@ -53,6 +51,18 @@ public class DataLoadTest {
         }
 
         orderHeaderRepository.flush();
+    }
+
+    @Test
+    void testN_plusOneProblem(){
+        Customer customer = customerRepository.findCustomerByCustomerNameIgnoreCase(TEST_CUSTOMER).get();
+
+        IntSummaryStatistics totalOrdered = orderHeaderRepository.findAllByCustomer(customer)
+                .stream()
+                .flatMap(orderHeader -> orderHeader.getOrderLines().stream())
+                .collect(Collectors.summarizingInt(OrderLine::getQuantityOrdered));
+
+        System.out.println("Total ordered: " + totalOrdered.getSum());
     }
 
     private OrderHeader saveOrder(Customer customer, List<Product> products){
