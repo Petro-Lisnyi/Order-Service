@@ -15,17 +15,12 @@ public class Boootstrap implements CommandLineRunner {
     @Autowired
     private OrderHeaderRepository orderHeaderRepository;
 
-    @Transactional
+    @Autowired
+    private  BootstrapOrderService bootstrapOrderService;
+
+
     @Override
     public void run(String... args) throws Exception {
-         var orderHeader = orderHeaderRepository.findById(131L).get();
-
-         orderHeader.getOrderLines().forEach(orderLine -> {
-             System.out.println(orderLine.getProduct().getDescription());
-
-             orderLine.getProduct().getCategories().forEach(category -> {
-                 System.out.println(category.getDescription());
-             });
-         });
+        bootstrapOrderService.readOrderData();
     }
 }
