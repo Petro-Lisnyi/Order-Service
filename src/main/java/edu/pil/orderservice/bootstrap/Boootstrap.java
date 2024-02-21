@@ -26,14 +26,22 @@ public class Boootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        bootstrapOrderService.readOrderData();
+//        bootstrapOrderService.readOrderData();
 
         Customer customer = new Customer();
         customer.setCustomerName("Testing Version");
         var saverCustomer = customerRepository.save(customer);
-
         System.out.println("Saved customer version is " + saverCustomer.getVersion());
 
-        customerRepository.deleteById(saverCustomer.getId());
+        saverCustomer.setCustomerName("Testing Version 2");
+        var saverCustomer2 = customerRepository.save(saverCustomer);
+        System.out.println("Saved customer version is " + saverCustomer2.getVersion());
+
+        saverCustomer2.setCustomerName("Testing Version 3");
+        var saverCustomer3 = customerRepository.save(saverCustomer2);
+        System.out.println("Saved customer version is " + saverCustomer3.getVersion());
+
+    //        customerRepository.delete(saverCustomer); // It won't work because the version isn't the same
+        customerRepository.delete(saverCustomer3);
     }
 }
