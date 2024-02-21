@@ -21,6 +21,9 @@ public class Customer extends BaseEntity{
     @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
     private Set<OrderHeader> orderHeader;
 
+    @Version
+    private Integer version;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
