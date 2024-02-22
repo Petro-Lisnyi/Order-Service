@@ -67,6 +67,9 @@ public class OrderHeader extends BaseEntity{
     @Fetch(FetchMode.SELECT)
     private OrderApproval orderApproval;
 
+    @Version
+    private Integer version;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

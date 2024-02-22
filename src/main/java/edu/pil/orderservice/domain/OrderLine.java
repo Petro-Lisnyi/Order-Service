@@ -2,6 +2,7 @@ package edu.pil.orderservice.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,9 @@ public class OrderLine extends BaseEntity {
 
     @ManyToOne
     private Product product;
+
+    @Version
+    private Integer version;
 
     @Override
     public boolean equals(Object o) {
