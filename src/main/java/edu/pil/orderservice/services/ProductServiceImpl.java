@@ -3,6 +3,7 @@ package edu.pil.orderservice.services;
 import edu.pil.orderservice.domain.Product;
 import edu.pil.orderservice.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -19,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product updateQuantityOnHand(Long id, Integer newQuantity) {
         var product = productRepository.findById(id).orElseThrow();
         product.setQuantityOnHand(newQuantity);

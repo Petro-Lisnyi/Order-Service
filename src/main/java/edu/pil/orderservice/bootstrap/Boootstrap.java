@@ -2,8 +2,11 @@ package edu.pil.orderservice.bootstrap;
 
 import edu.pil.orderservice.domain.Customer;
 import edu.pil.orderservice.domain.OrderHeader;
+import edu.pil.orderservice.domain.Product;
+import edu.pil.orderservice.domain.ProductStatus;
 import edu.pil.orderservice.repositories.CustomerRepository;
 import edu.pil.orderservice.repositories.OrderHeaderRepository;
+import edu.pil.orderservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -22,6 +25,9 @@ public class Boootstrap implements CommandLineRunner {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private ProductService productService;
 
 
     @Override
@@ -43,5 +49,20 @@ public class Boootstrap implements CommandLineRunner {
 
     //        customerRepository.delete(saverCustomer); // It won't work because the version isn't the same
         customerRepository.delete(saverCustomer3);
+
+        updateProduct();
+    }
+
+    void updateProduct() {
+
+        var newProduct = new Product();
+        newProduct.setProductStatus(ProductStatus.IN_STOCK);
+        newProduct.setDescription("Quantity test");
+        newProduct.setQuantityOnHand(5);
+
+        var savedProduct = productService.saveProduct(newProduct);
+        var updatedProduct = productService.updateQuantityOnHand(savedProduct.getId(), 20);
+
+        System.out.println("Updated quantity is " + updatedProduct.getQuantityOnHand());
     }
 }
