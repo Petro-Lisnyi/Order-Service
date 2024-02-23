@@ -3,6 +3,7 @@ package edu.pil.orderservice.domain;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
@@ -10,7 +11,10 @@ import java.util.Objects;
 @Setter
 @Getter
 public class Address {
+
     private String address;
+
+    @Length(max = 30)
     private String city;
     private String state;
     private String zipCode;

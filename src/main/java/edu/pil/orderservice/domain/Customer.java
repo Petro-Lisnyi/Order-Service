@@ -1,8 +1,10 @@
 package edu.pil.orderservice.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 import java.util.Set;
@@ -11,10 +13,15 @@ import java.util.Set;
 @Getter
 @Setter
 public class Customer extends BaseEntity{
+
+    @Length(max = 50)
     private String customerName;
+
+    @Length(max = 20)
     private String phone;
     private String email;
 
+    @Valid
     @Embedded
     private Address address;
 
