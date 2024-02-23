@@ -23,6 +23,8 @@ public class Product extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
 
+    private Integer quantityOnHand;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

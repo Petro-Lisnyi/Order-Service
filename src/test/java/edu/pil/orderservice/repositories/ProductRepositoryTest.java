@@ -2,6 +2,7 @@ package edu.pil.orderservice.repositories;
 
 import edu.pil.orderservice.domain.OrderHeader;
 import edu.pil.orderservice.domain.Product;
+import edu.pil.orderservice.domain.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -40,5 +41,23 @@ class ProductRepositoryTest {
 
         assertNotNull(product);
         assertEquals(product.getCategories().size(), 2);
+    }
+
+
+    @Test
+    void productQuantityTest() {
+
+        var newProduct = new Product();
+        newProduct.setProductStatus(ProductStatus.IN_STOCK);
+        newProduct.setDescription("Quantity test");
+        newProduct.setQuantityOnHand(5);
+
+        var savedProduct = productRepository.saveAndFlush(newProduct);
+
+        savedProduct.setQuantityOnHand(20);
+        var updatedProduct  = productRepository.saveAndFlush(savedProduct);
+
+        assertNotNull(updatedProduct);
+        assertEquals(updatedProduct.getQuantityOnHand(), 20);
     }
 }
