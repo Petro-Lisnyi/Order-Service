@@ -3,10 +3,12 @@ package edu.pil.orderservice.repositories;
 import edu.pil.orderservice.domain.OrderHeader;
 import edu.pil.orderservice.domain.Product;
 import edu.pil.orderservice.domain.ProductStatus;
+import edu.pil.orderservice.services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,10 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ComponentScan(basePackageClasses = {ProductService.class})
 class ProductRepositoryTest {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductService productService;
 
     @Test
     void testSaveProduct() {
@@ -52,10 +58,8 @@ class ProductRepositoryTest {
         newProduct.setDescription("Quantity test");
         newProduct.setQuantityOnHand(5);
 
-        var savedProduct = productRepository.saveAndFlush(newProduct);
-
-        savedProduct.setQuantityOnHand(20);
-        var updatedProduct  = productRepository.saveAndFlush(savedProduct);
+        var savedProduct = productService.saveProduct(newProduct);
+        var updatedProduct = productService.updateQuantityOnHand(savedProduct.getId(), 20);
 
         assertNotNull(updatedProduct);
         assertEquals(updatedProduct.getQuantityOnHand(), 20);
