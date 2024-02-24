@@ -2,6 +2,7 @@ package edu.pil.orderservice.repositories;
 
 import edu.pil.orderservice.domain.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,5 +128,21 @@ public class OrderHeaderRepositoryTest {
             System.out.println(fetched);
             assertNull(fetched);
         });
+    }
+
+    @Test
+    void customerValidationTest(){
+        var customer = new Customer();
+        var address = new Address();
+
+        customer.setEmail("not validEmail");
+        customer.setPhone("0987654321");
+
+        address.setAddress("somewhere there");
+        address.setState("the state");
+        address.setCity("the city");
+        customer.setAddress(address);
+
+        assertThrows(ConstraintViolationException.class, () -> customerRepository.save(customer));
     }
 }
